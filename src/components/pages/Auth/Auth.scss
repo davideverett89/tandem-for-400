@@ -1,3 +1,9 @@
+@import '../../../styles/variables';
+
 .Auth {
     display: block;
+    .auth-btn {
+        background-color: $secondaryColor;
+        border: 1px solid black;
+    }
 }

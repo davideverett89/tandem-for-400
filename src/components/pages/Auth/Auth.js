@@ -13,7 +13,7 @@ const Auth = () => {
   return (
     <div className="Auth">
         <h1 className="display-4">Welcome to Tandem For 400!</h1>
-        <button className="btn btn-success" onClick={loginEvent}>Login</button>
+        <button className="btn auth-btn" onClick={loginEvent}>Login</button>
     </div>
   );
 };
