@@ -4,6 +4,8 @@ import 'firebase/auth';
 import fbConnection from '../helpers/data/connection';
 
 import Auth from '../components/pages/Auth/Auth';
+import Home from '../components/pages/Home/Home';
+import Main from '../components/pages/Main/Main';
 
 import MyNavBar from '../components/shared/MyNavBar/MyNavBar';
 
@@ -31,6 +33,8 @@ const App = () => {
         <h2>{authed ? 'Logged In' : 'Logged Out'}</h2>
         <MyNavBar />
         <Auth />
+        <Home />
+        <Main />
       </div>
   );
 };
