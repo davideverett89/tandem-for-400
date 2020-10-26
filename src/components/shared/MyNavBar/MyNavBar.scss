@@ -1,3 +1,9 @@
+@import '../../../styles/variables';
+
 .MyNavBar {
     display: block;
+    .logout-btn {
+        background-color: $secondaryColor;
+        border: 1px solid black;
+    }
 }
