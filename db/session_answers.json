@@ -1,0 +1,52 @@
+{
+    "session_answer1": {
+        "session_id": "session1",
+        "question_id": "question3",
+        "question_option_id": "question_option12"
+    },
+    "session_answer2": {
+        "session_id": "session1",
+        "question_id": "question1",
+        "question_option_id": "question_option1"
+    },
+    "session_answer3": {
+        "session_id": "session1",
+        "question_id": "question2",
+        "question_option_id": "question_option5"
+    },
+    "session_answer4": {
+        "session_id": "session1",
+        "question_id": "question7",
+        "question_option_id": "question_option28"
+    },
+    "session_answer5": {
+        "session_id": "session1",
+        "question_id": "question15",
+        "question_option_id": "question_option59"
+    },
+    "session_answer6": {
+        "session_id": "session1",
+        "question_id": "question21",
+        "question_option_id": "question_option82"
+    },
+    "session_answer7": {
+        "session_id": "session1",
+        "question_id": "question19",
+        "question_option_id": "question_option75"
+    },
+    "session_answer8": {
+        "session_id": "session1",
+        "question_id": "question18",
+        "question_option_id": "question_option71"
+    },
+    "session_answer9": {
+        "session_id": "session1",
+        "question_id": "question12",
+        "question_option_id": "question_option47"
+    },
+    "session_answer10": {
+        "session_id": "session1",
+        "question_id": "question13",
+        "question_option_id": "question_option48"
+    }
+}
