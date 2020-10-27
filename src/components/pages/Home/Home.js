@@ -23,13 +23,9 @@ const Home = ({ history }) => {
   };
 
   return (
-    <div className="Home">
-        <h1 className="display-4">Welcome to Tandem For 400!</h1>
-        <p className="lead">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-        </p>
-        <button className="btn start-btn" onClick={handleCreateSession}>Start</button>
+    <div className="Home mt-5">
+        <h1 className="display-4 m-5">Welcome to Tandem For 400!</h1>
+        <button className="btn start-btn m-5" onClick={handleCreateSession}>Start Trivia!</button>
     </div>
   );
 };

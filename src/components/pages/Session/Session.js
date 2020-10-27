@@ -1,24 +1,16 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
 import sessionData from '../../../helpers/data/sessionData';
-import smash from '../../../helpers/data/smash';
+
+import Question from '../../shared/Question/Question';
 
 import './Session.scss';
 
 const Session = ({ match }) => {
   const [counter, setCounter] = useState(1);
   const [isMounted, setIsMounted] = useState(false);
-  const [questions, setQuestions] = useState([]);
   const [session, setSession] = useState({});
-  const [currentQuestion, setCurrentQuestion] = useState({});
-
-  const selectRandomQuestion = useCallback(() => {
-    if (isMounted && questions.length > 0) {
-      const randomNumber = Math.floor(Math.random() * questions.length);
-      const randomQuestion = questions[randomNumber];
-      setCurrentQuestion(randomQuestion);
-    }
-  }, [questions, isMounted]);
+  const [previousQuestions, setPreviousQuestions] = useState([]);
 
   const getData = useCallback(() => {
     const { sessionId } = match.params;
@@ -26,26 +18,34 @@ const Session = ({ match }) => {
       .then((response) => {
         if (isMounted) {
           const currentSession = response.data;
+          currentSession.id = sessionId;
           setSession(currentSession);
-          smash.getAllQuestionsWithOptions()
-            .then((allQuestions) => {
-              setQuestions(allQuestions);
-            });
         }
       })
       .catch((err) => console.error('There was an error loading this trivia session:', err));
   }, [isMounted, match.params]);
 
+  const handlePreviousQuestions = (newQuestionId) => {
+    const questionList = [...previousQuestions];
+    questionList.push(newQuestionId);
+    setPreviousQuestions(questionList);
+  };
+
   useEffect(() => {
     setIsMounted(true);
     getData();
     return () => setIsMounted(false);
-  }, [isMounted, match.params]);
+  }, [getData, isMounted, match.params]);
 
   return (
-    <div className="Session">
-        <h1>Session {session.id}, Question {counter} </h1>
-        <h3>{currentQuestion !== undefined ? currentQuestion.text : ''}</h3>
+    <div className="Session mt-5 mx-auto">
+        <h1>Question {counter} </h1>
+        <Question
+            previousQuestions={previousQuestions}
+            handlePreviousQuestions={handlePreviousQuestions}
+            counter={counter}
+            setCounter={setCounter}
+        />
     </div>
   );
 };
