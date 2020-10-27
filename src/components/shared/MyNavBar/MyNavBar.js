@@ -12,17 +12,17 @@ const MyNavBar = ({ authed }) => {
 
   return (
       <div className="MyNavBar">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-          <a class="navbar-brand" href="/home">Tandem For 400</a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+        <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+          <a className="navbar-brand" href="/home">Tandem For 400</a>
+          <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span className="navbar-toggler-icon"></span>
           </button>
-          <div class="collapse navbar-collapse" id="navbarNav">
+          <div className="collapse navbar-collapse" id="navbarNav">
             {
               authed
                 ? (
-                  <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
+                  <ul className="navbar-nav ml-auto">
+                    <li className="nav-item">
                       <button className="btn logout-btn" onClick={logMeOut}>Logout</button>
                     </li>
                   </ul>
