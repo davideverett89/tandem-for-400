@@ -1,0 +1,9 @@
+@import '../../../styles/variables';
+
+.Session {
+    display: block;
+    .answer-btn {
+      background-color: $secondaryColor;
+      border: 1px solid black;
+    }
+}

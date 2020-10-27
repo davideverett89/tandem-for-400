@@ -8,17 +8,14 @@ import playerData from '../../../helpers/data/playerData';
 import './Auth.scss';
 
 const Auth = () => {
-  const savePlayer = () => {
+  const handleCreatePlayer = () => {
     const newPlayer = {
       display_name: authData.getDisplayName(),
       email: authData.getEmail(),
       uid: authData.getUid(),
     };
     playerData.postPlayer(newPlayer)
-      .then((response) => {
-        const playerId = response.data.name;
-        console.log(playerId);
-      })
+      .then()
       .catch((err) => console.error('There was an issue with registering a new player at login:', err));
   };
 
@@ -26,9 +23,7 @@ const Auth = () => {
     playerData.getPlayerByEmail(authData.getEmail())
       .then((response) => {
         if (response.length === 0) {
-          savePlayer();
-        } else {
-          console.log('This player exists already.');
+          handleCreatePlayer();
         }
       })
       .catch((err) => console.error('There was an issue checking for a player at login:', err));
