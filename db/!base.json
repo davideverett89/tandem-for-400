@@ -1,7 +1,7 @@
 {
     "players": "players",
     "sessions": "sessions",
-    "session_questions": "session_questions",
+    "session_answers": "session_answers",
     "questions": "questions",
     "question_options": "question_options"
 }
