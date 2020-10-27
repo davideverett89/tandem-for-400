@@ -11,7 +11,7 @@ import fbConnection from '../helpers/data/connection';
 
 import Auth from '../components/pages/Auth/Auth';
 import Home from '../components/pages/Home/Home';
-import Main from '../components/pages/Main/Main';
+import Session from '../components/pages/Session/Session';
 
 import MyNavBar from '../components/shared/MyNavBar/MyNavBar';
 
@@ -55,7 +55,7 @@ const App = () => {
             <MyNavBar authed={authed} />
             <Switch>
               <PrivateRoute path="/home" component={Home} authed={authed} />
-              <PrivateRoute path="/main" component={Main} authed={authed} />
+              <PrivateRoute path="/session/:sessionId" component={Session} authed={authed} />
               <PublicRoute path='/auth' component={Auth} authed={authed} />
               <Redirect from="*" to="/home"/>
             </Switch>
