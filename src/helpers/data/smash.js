@@ -1,5 +1,8 @@
 import questionData from './questionData';
 import questionOptionData from './questionOptionData';
+import sessionData from './sessionData';
+import sessionAnswerData from './sessionAnswerData';
+import playerData from './playerData';
 
 const shuffle = (a) => {
   const arr = [...a];
@@ -34,6 +37,40 @@ const getRandomQuestionWithOptions = () => new Promise((resolve, reject) => {
     .catch((err) => reject(err));
 });
 
-const exportObject = { getRandomQuestionWithOptions };
+const getCompletedSessionWithAnswersBySessionId = (sessionId) => new Promise((resolve, reject) => {
+  sessionData.getSessionById(sessionId).then((response) => {
+    const completedSession = response.data;
+    completedSession.id = sessionId;
+    completedSession.player = {};
+    completedSession.answers = [];
+    playerData.getPlayers().then((players) => {
+      sessionAnswerData.getSessionAnswers().then((sessionAnswers) => {
+        questionOptionData.getQuestionOptions().then((questionOptions) => {
+          sessionAnswers.forEach((sessionAnswer) => {
+            const newSessionAnswer = { ...sessionAnswer, correctAnswer: false };
+            if (newSessionAnswer.session_id === sessionId) {
+              const selectedOption = questionOptions.find((x) => x.id === newSessionAnswer.question_option_id);
+              if (selectedOption.is_correct) {
+                newSessionAnswer.correctAnswer = true;
+                completedSession.answers.push(newSessionAnswer);
+              } else {
+                completedSession.answers.push(newSessionAnswer);
+              }
+            }
+          });
+          players.forEach((player) => {
+            if (player.uid === completedSession.player_uid) {
+              completedSession.player = player;
+            }
+          });
+          resolve(completedSession);
+        });
+      });
+    });
+  })
+    .catch((err) => reject(err));
+});
+
+const exportObject = { getRandomQuestionWithOptions, getCompletedSessionWithAnswersBySessionId };
 
 export default exportObject;

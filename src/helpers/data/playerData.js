@@ -19,8 +19,24 @@ const getPlayerByEmail = (email) => new Promise((resolve, reject) => {
     .catch((err) => reject(err));
 });
 
+const getPlayers = () => new Promise((resolve, reject) => {
+  axios.get(`${baseUrl}/players.json`)
+    .then((response) => {
+      const playersObject = response.data;
+      const players = [];
+      if (playersObject !== null) {
+        Object.keys(playersObject).forEach((playerId) => {
+          playersObject[playerId].id = playerId;
+          players.push(playersObject[playerId]);
+        });
+      }
+      resolve(players);
+    })
+    .catch((err) => reject(err));
+});
+
 const postPlayer = (newPlayer) => axios.post(`${baseUrl}/players.json`, newPlayer);
 
-const exportObject = { getPlayerByEmail, postPlayer };
+const exportObject = { getPlayerByEmail, postPlayer, getPlayers };
 
 export default exportObject;
