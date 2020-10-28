@@ -39,9 +39,9 @@ const Auth = () => {
   };
 
   return (
-    <div className="Auth">
-        <h1 className="display-4">Welcome to Tandem For 400!</h1>
-        <button className="btn auth-btn" onClick={loginEvent}>Login</button>
+    <div className="Auth d-flex flex-column justify-content-center align-items-center">
+        <h1 className="display-4 m-5">Welcome to Tandem For 400!</h1>
+        <button className="btn auth-btn m-5" onClick={loginEvent}>Login</button>
     </div>
   );
 };

@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import React from 'react';
 import moment from 'moment';
 
@@ -17,13 +16,13 @@ const Home = ({ history }) => {
     sessionData.postSession(newSession)
       .then((response) => {
         const sessionId = response.data.name;
-        history.push(`session/${sessionId}`);
+        history.push(`/session/${sessionId}`);
       })
       .catch((err) => console.error('There was an issue creating a new session for this player:', err));
   };
 
   return (
-    <div className="Home mt-5">
+    <div className="Home d-flex flex-column justify-content-center align-items-center">
         <h1 className="display-4 m-5">Welcome to Tandem For 400!</h1>
         <button className="btn start-btn m-5" onClick={handleCreateSession}>Start Trivia!</button>
     </div>
