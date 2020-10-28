@@ -7,6 +7,8 @@ const getSessionById = (sessionId) => axios.get(`${baseUrl}/sessions/${sessionId
 
 const postSession = (newSession) => axios.post(`${baseUrl}/sessions.json`, newSession);
 
-const exportObject = { postSession, getSessionById };
+const patchSession = (sessionId, endTime) => axios.patch(`${baseUrl}/sessions/${sessionId}.json`, { end_time: endTime });
+
+const exportObject = { postSession, getSessionById, patchSession };
 
 export default exportObject;

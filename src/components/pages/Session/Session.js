@@ -1,16 +1,19 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import moment from 'moment';
 
 import sessionData from '../../../helpers/data/sessionData';
+import sessionAnswerData from '../../../helpers/data/sessionAnswerData';
 
 import Question from '../../shared/Question/Question';
 
 import './Session.scss';
 
-const Session = ({ match }) => {
+const Session = ({ match, history }) => {
   const [counter, setCounter] = useState(1);
   const [isMounted, setIsMounted] = useState(false);
   const [session, setSession] = useState({});
   const [previousQuestions, setPreviousQuestions] = useState([]);
+  const [sessionAnswers, setSessionAnswers] = useState([]);
 
   const getData = useCallback(() => {
     const { sessionId } = match.params;
@@ -31,20 +34,54 @@ const Session = ({ match }) => {
     setPreviousQuestions(questionList);
   };
 
+  const handleSessionAnswers = (newSessionAnswer) => {
+    const sessionAnswerList = [...sessionAnswers];
+    sessionAnswerList.push(newSessionAnswer);
+    setSessionAnswers(sessionAnswerList);
+  };
+
+  const saveSessionAnswers = (finalSessionAnswers) => {
+    finalSessionAnswers.forEach((singleSessionAnswer) => {
+      sessionAnswerData.postSessionAnswer(singleSessionAnswer);
+    });
+  };
+
+  const handlePatchSession = useCallback(() => {
+    const { sessionId } = match.params;
+    const endTime = moment().format('MMMM Do YYYY, h:mm:ss a');
+    sessionData.patchSession(sessionId, endTime)
+      .then(() => {})
+      .catch((err) => console.error('There was an error logging session end_time:', err));
+  }, [match.params]);
+
+  const endSession = useCallback(() => {
+    const { sessionId } = match.params;
+    saveSessionAnswers(sessionAnswers);
+    handlePatchSession();
+    history.replace(`/score/${sessionId}`);
+  }, [handlePatchSession, history, match.params, sessionAnswers]);
+
   useEffect(() => {
     setIsMounted(true);
-    getData();
+    if (counter > 10) {
+      endSession();
+    } else {
+      getData();
+    }
     return () => setIsMounted(false);
-  }, [getData, isMounted, match.params]);
+  }, [getData, isMounted, match.params, counter, endSession]);
 
   return (
-    <div className="Session mt-5 mx-auto">
+    <div className="Session mt-5 mx-auto d-flex flex-column justify-content-center align-items-center">
         <h1>Question {counter} </h1>
         <Question
-            previousQuestions={previousQuestions}
-            handlePreviousQuestions={handlePreviousQuestions}
-            counter={counter}
-            setCounter={setCounter}
+          session={session}
+          endSession={endSession}
+          previousQuestions={previousQuestions}
+          handlePreviousQuestions={handlePreviousQuestions}
+          handleSessionAnswers={handleSessionAnswers}
+          counter={counter}
+          setCounter={setCounter}
         />
     </div>
   );

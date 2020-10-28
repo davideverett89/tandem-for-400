@@ -19,15 +19,16 @@ const OptionRadio = ({
 
   return (
     <div className="OptionRadio m-3">
-        <div className={`form-check ${borderColor()}`}>
+        <div className={`form-check ${borderColor()} option-radio`}>
             <input
-                className="form-check-input"
+                className="form-check-input text-dark"
                 type="radio"
                 name="optionRadios"
                 id={option.id}
                 value={option.id}
                 checked={option.id === selectedOptionId}
                 onChange={(e) => setSelectedOptionId(e.target.value)}
+                disabled={revealAnswer}
             />
             <label className="form-check-label" htmlFor="exampleRadios1">{option.text}</label>
         </div>

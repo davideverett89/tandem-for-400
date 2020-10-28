@@ -7,8 +7,10 @@ import smash from '../../../helpers/data/smash';
 import './Question.scss';
 
 const Question = ({
+  session,
   previousQuestions,
   handlePreviousQuestions,
+  handleSessionAnswers,
   counter,
   setCounter,
 }) => {
@@ -21,6 +23,8 @@ const Question = ({
     smash.getRandomQuestionWithOptions()
       .then((question) => {
         if (isMounted) {
+          setSelectedOptionId('');
+          setRevealAnswer(false);
           setCurrentQuestion(question);
         }
       });
@@ -28,14 +32,22 @@ const Question = ({
 
   const delay = (t) => new Promise((resolve) => setTimeout(resolve, t));
 
+  const handleCreateSessionAnswers = () => {
+    const newSessionAnswer = {
+      session_id: session.id,
+      question_id: currentQuestion.id,
+      question_option_id: selectedOptionId,
+    };
+    handleSessionAnswers(newSessionAnswer);
+  };
+
   const handleSubmitAnswer = (e) => {
     e.preventDefault();
     setRevealAnswer(true);
-    delay(3000).then(() => {
-      setRevealAnswer(false);
+    delay(2000).then(() => {
       handlePreviousQuestions(currentQuestion.id);
+      handleCreateSessionAnswers();
       selectRandomQuestion();
-      setSelectedOptionId('');
       setCounter(counter + 1);
     });
   };
@@ -53,12 +65,24 @@ const Question = ({
             {
                 currentQuestion.id
                   ? currentQuestion.options.map((option) => (
-                    <OptionRadio key={option.id} option={option} selectedOptionId={selectedOptionId} setSelectedOptionId={setSelectedOptionId} revealAnswer={revealAnswer}/>
+                    <OptionRadio
+                      key={option.id}
+                      option={option}
+                      selectedOptionId={selectedOptionId}
+                      setSelectedOptionId={setSelectedOptionId}
+                      revealAnswer={revealAnswer}
+                    />
                   ))
                   : ''
             }
         </form>
-        <button className="btn answer-btn m-3" onClick={handleSubmitAnswer} disabled={selectedOptionId === ''}>Submit Answer</button>
+        <button
+          className="btn answer-btn m-3"
+          onClick={handleSubmitAnswer}
+          disabled={selectedOptionId === ''}
+        >
+          Submit Answer
+        </button>
     </div>
   );
 };
