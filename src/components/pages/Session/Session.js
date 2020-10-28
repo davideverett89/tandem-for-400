@@ -50,16 +50,16 @@ const Session = ({ match, history }) => {
     const { sessionId } = match.params;
     const endTime = moment().format('MMMM Do YYYY, h:mm:ss a');
     sessionData.patchSession(sessionId, endTime)
-      .then(() => {})
+      .then(() => {
+        history.replace(`/score/${sessionId}`);
+      })
       .catch((err) => console.error('There was an error logging session end_time:', err));
-  }, [match.params]);
+  }, [history, match.params]);
 
   const endSession = useCallback(() => {
-    const { sessionId } = match.params;
     saveSessionAnswers(sessionAnswers);
     handlePatchSession();
-    history.replace(`/score/${sessionId}`);
-  }, [handlePatchSession, history, match.params, sessionAnswers]);
+  }, [handlePatchSession, sessionAnswers]);
 
   useEffect(() => {
     setIsMounted(true);
