@@ -48,7 +48,7 @@ const Session = ({ match, history }) => {
 
   const handlePatchSession = useCallback(() => {
     const { sessionId } = match.params;
-    const endTime = moment().format('MMMM Do YYYY, h:mm:ss a');
+    const endTime = moment().format();
     sessionData.patchSession(sessionId, endTime)
       .then(() => {
         history.replace(`/score/${sessionId}`);

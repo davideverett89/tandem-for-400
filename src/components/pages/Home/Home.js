@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 
 import sessionData from '../../../helpers/data/sessionData';
@@ -7,18 +7,27 @@ import authData from '../../../helpers/data/authData';
 import './Home.scss';
 
 const Home = ({ history }) => {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+    return () => setIsMounted(false);
+  }, []);
+
   const handleCreateSession = (e) => {
     const newSession = {
       player_uid: authData.getUid(),
-      start_time: moment().format('MMMM Do YYYY, h:mm:ss a'),
+      start_time: moment().format(),
       end_time: '',
     };
-    sessionData.postSession(newSession)
-      .then((response) => {
-        const sessionId = response.data.name;
-        history.push(`/session/${sessionId}`);
-      })
-      .catch((err) => console.error('There was an issue creating a new session for this player:', err));
+    if (isMounted) {
+      sessionData.postSession(newSession)
+        .then((response) => {
+          const sessionId = response.data.name;
+          history.push(`/session/${sessionId}`);
+        })
+        .catch((err) => console.error('There was an issue creating a new session for this player:', err));
+    }
   };
 
   return (
