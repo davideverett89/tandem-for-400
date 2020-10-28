@@ -23,12 +23,23 @@ const Question = ({
     smash.getRandomQuestionWithOptions()
       .then((question) => {
         if (isMounted) {
-          setSelectedOptionId('');
-          setRevealAnswer(false);
-          setCurrentQuestion(question);
+          if (previousQuestions.length > 0) {
+            previousQuestions.forEach((questionId) => {
+              if (questionId === question.id) {
+                selectRandomQuestion();
+              }
+            });
+            setSelectedOptionId('');
+            setRevealAnswer(false);
+            setCurrentQuestion(question);
+          } else {
+            setSelectedOptionId('');
+            setRevealAnswer(false);
+            setCurrentQuestion(question);
+          }
         }
       });
-  }, [isMounted]);
+  }, [isMounted, previousQuestions]);
 
   const delay = (t) => new Promise((resolve) => setTimeout(resolve, t));
 
