@@ -2,10 +2,12 @@ import React, { useState, useEffect, useCallback } from 'react';
 import moment from 'moment';
 
 import smash from '../../../helpers/data/smash';
+import authData from '../../../helpers/data/authData';
+import sessionData from '../../../helpers/data/sessionData';
 
 import './Score.scss';
 
-const Score = ({ match }) => {
+const Score = ({ match, history }) => {
   const [isMounted, setIsMounted] = useState(false);
   const [endedSession, setEndedSession] = useState({});
   const [player, setPlayer] = useState({});
@@ -42,6 +44,23 @@ const Score = ({ match }) => {
     return percentage;
   };
 
+  const handleCreateSession = (e) => {
+    e.preventDefault();
+    const newSession = {
+      player_uid: authData.getUid(),
+      start_time: moment().format(),
+      end_time: '',
+    };
+    if (isMounted) {
+      sessionData.postSession(newSession)
+        .then((response) => {
+          const sessionId = response.data.name;
+          history.replace(`/session/${sessionId}`);
+        })
+        .catch((err) => console.error('There was an issue creating a new session for this player:', err));
+    }
+  };
+
   useEffect(() => {
     setIsMounted(true);
     getData();
@@ -64,6 +83,7 @@ const Score = ({ match }) => {
             </li>
             <li className="list-group-item">Percentage Correct: {calculateScorePercentage()}%</li>
         </ul>
+        <button className="btn restart-btn m-5" onClick={handleCreateSession}>Play Again!</button>
     </div>
   );
 };

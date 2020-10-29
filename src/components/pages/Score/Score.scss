@@ -1,4 +1,10 @@
+@import '../../../styles/variables';
+
 .Score {
     display: block;
     height: 90vh;
+    .restart-btn {
+        background-color: $secondaryColor;
+        border: 1px solid black;
+    }
 }

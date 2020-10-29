@@ -13,6 +13,7 @@ const Question = ({
   handleSessionAnswers,
   counter,
   setCounter,
+  endSession,
 }) => {
   const [isMounted, setIsMounted] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState({});
@@ -23,20 +24,30 @@ const Question = ({
     smash.getRandomQuestionWithOptions()
       .then((question) => {
         if (isMounted) {
-          if (previousQuestions.length > 0) {
-            previousQuestions.forEach((questionId) => {
-              if (questionId === question.id) {
-                selectRandomQuestion();
-              }
-            });
-            setSelectedOptionId('');
-            setRevealAnswer(false);
-            setCurrentQuestion(question);
+          setCurrentQuestion({});
+          const checkRepeat = previousQuestions.indexOf(question.id);
+          console.log(checkRepeat);
+          if (checkRepeat !== -1) {
+            selectRandomQuestion();
           } else {
             setSelectedOptionId('');
             setRevealAnswer(false);
             setCurrentQuestion(question);
           }
+          // if (previousQuestions.length > 0) {
+          //   previousQuestions.forEach((questionId) => {
+          //     if (questionId === question.id) {
+          //       selectRandomQuestion();
+          //     }
+          //   });
+          //   setSelectedOptionId('');
+          //   setRevealAnswer(false);
+          //   setCurrentQuestion(question);
+          // } else {
+          //   setSelectedOptionId('');
+          //   setRevealAnswer(false);
+          //   setCurrentQuestion(question);
+          // }
         }
       });
   }, [isMounted, previousQuestions]);
@@ -55,11 +66,16 @@ const Question = ({
   const handleSubmitAnswer = (e) => {
     e.preventDefault();
     setRevealAnswer(true);
-    delay(2000).then(() => {
-      handlePreviousQuestions(currentQuestion.id);
-      handleCreateSessionAnswers();
-      selectRandomQuestion();
-      setCounter(counter + 1);
+    delay(1500).then(() => {
+      if (counter === 10) {
+        handleCreateSessionAnswers();
+        endSession();
+      } else {
+        handlePreviousQuestions(currentQuestion.id);
+        handleCreateSessionAnswers();
+        selectRandomQuestion();
+        setCounter(counter + 1);
+      }
     });
   };
 
