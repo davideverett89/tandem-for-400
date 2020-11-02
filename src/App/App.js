@@ -37,18 +37,17 @@ const PrivateRoute = ({ component: Component, authed, ...rest }) => {
 const App = () => {
   const [authed, setAuthed] = useState(false);
 
-  const removeListener = firebase.auth().onAuthStateChanged((user) => {
-    if (user) {
-      console.log('Logged in.');
-      setAuthed(true);
-    } else {
-      setAuthed(false);
-    }
-  });
-
   useEffect(() => {
-    removeListener();
-  });
+    const removeListener = firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        console.log(user);
+        setAuthed(true);
+      } else {
+        setAuthed(false);
+      }
+    });
+    return removeListener;
+  }, [authed]);
 
   return (
       <div className="App">
