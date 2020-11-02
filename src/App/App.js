@@ -39,6 +39,7 @@ const App = () => {
 
   const removeListener = firebase.auth().onAuthStateChanged((user) => {
     if (user) {
+      console.log('Logged in.');
       setAuthed(true);
     } else {
       setAuthed(false);
