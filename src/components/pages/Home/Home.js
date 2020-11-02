@@ -15,6 +15,7 @@ const Home = ({ history }) => {
   }, []);
 
   const handleCreateSession = (e) => {
+    e.preventDefault();
     const newSession = {
       player_uid: authData.getUid(),
       start_time: moment().format(),
