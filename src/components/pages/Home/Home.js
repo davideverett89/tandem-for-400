@@ -34,6 +34,9 @@ const Home = ({ history }) => {
   return (
     <div className="Home d-flex flex-column justify-content-center align-items-center">
         <h1 className="display-4 m-5">Welcome to Tandem For 400!</h1>
+        <p className="lead">Test your knowledge with a bit of trivia!</p>
+        <p className="lead">Each round of trivia will consist of ten multiple choice questions.  Answer them to the best of your ability.</p>
+        <p className="lead">Your score will be displayed at the end of the round. Good luck!</p>
         <button className="btn start-btn m-5" onClick={handleCreateSession}>Start Trivia!</button>
     </div>
   );
