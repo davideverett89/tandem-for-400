@@ -1,4 +1,7 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, {
+  useState,
+  useEffect,
+} from 'react';
 
 import OptionRadio from '../OptionRadio/OptionRadio';
 
@@ -8,7 +11,7 @@ import './Question.scss';
 
 const Question = ({
   session,
-  previousQuestions,
+  previousQuestionIds,
   handlePreviousQuestions,
   handleSessionAnswers,
   counter,
@@ -19,38 +22,6 @@ const Question = ({
   const [currentQuestion, setCurrentQuestion] = useState({});
   const [selectedOptionId, setSelectedOptionId] = useState('');
   const [revealAnswer, setRevealAnswer] = useState(false);
-
-  const selectRandomQuestion = useCallback(() => {
-    smash.getRandomQuestionWithOptions()
-      .then((question) => {
-        if (isMounted) {
-          setCurrentQuestion({});
-          const checkRepeat = previousQuestions.indexOf(question.id);
-          console.log(checkRepeat);
-          if (checkRepeat !== -1) {
-            selectRandomQuestion();
-          } else {
-            setSelectedOptionId('');
-            setRevealAnswer(false);
-            setCurrentQuestion(question);
-          }
-          // if (previousQuestions.length > 0) {
-          //   previousQuestions.forEach((questionId) => {
-          //     if (questionId === question.id) {
-          //       selectRandomQuestion();
-          //     }
-          //   });
-          //   setSelectedOptionId('');
-          //   setRevealAnswer(false);
-          //   setCurrentQuestion(question);
-          // } else {
-          //   setSelectedOptionId('');
-          //   setRevealAnswer(false);
-          //   setCurrentQuestion(question);
-          // }
-        }
-      });
-  }, [isMounted, previousQuestions]);
 
   const delay = (t) => new Promise((resolve) => setTimeout(resolve, t));
 
@@ -67,13 +38,12 @@ const Question = ({
     e.preventDefault();
     setRevealAnswer(true);
     delay(1500).then(() => {
-      if (counter === 10) {
+      if (counter > 10) {
         handleCreateSessionAnswers();
         endSession();
       } else {
         handlePreviousQuestions(currentQuestion.id);
         handleCreateSessionAnswers();
-        selectRandomQuestion();
         setCounter(counter + 1);
       }
     });
@@ -81,28 +51,44 @@ const Question = ({
 
   useEffect(() => {
     setIsMounted(true);
+    const selectRandomQuestion = () => {
+      smash.getRandomQuestionWithOptions()
+        .then((question) => {
+          if (isMounted) {
+            const checkForRepeat = previousQuestionIds.indexOf(question.id);
+            if (checkForRepeat === -1) {
+              setSelectedOptionId('');
+              setRevealAnswer(false);
+              setCurrentQuestion(question);
+            } else {
+              selectRandomQuestion();
+            }
+          }
+        });
+    };
     selectRandomQuestion();
     return () => setIsMounted(false);
-  }, [selectRandomQuestion]);
+  }, [counter, isMounted, previousQuestionIds]);
 
   return (
     <div className="Question mt-5 col-6 mx-auto">
-        <h3>{currentQuestion.id ? currentQuestion.text : ''}</h3>
-        <form className="my-5 mx-auto">
-            {
-                currentQuestion.id
-                  ? currentQuestion.options.map((option) => (
-                    <OptionRadio
-                      key={option.id}
-                      option={option}
-                      selectedOptionId={selectedOptionId}
-                      setSelectedOptionId={setSelectedOptionId}
-                      revealAnswer={revealAnswer}
-                    />
-                  ))
-                  : ''
-            }
-        </form>
+      <h1>Question {counter <= 10 ? counter : '10'} </h1>
+          <h3>{currentQuestion.id ? currentQuestion.text : ''}</h3>
+          <form className="my-5 mx-auto">
+              {
+                  currentQuestion.id
+                    ? currentQuestion.options.map((option) => (
+                      <OptionRadio
+                        key={option.id}
+                        option={option}
+                        selectedOptionId={selectedOptionId}
+                        setSelectedOptionId={setSelectedOptionId}
+                        revealAnswer={revealAnswer}
+                      />
+                    ))
+                    : ''
+              }
+          </form>
         <button
           className="btn answer-btn m-3"
           onClick={handleSubmitAnswer}
